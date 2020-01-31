@@ -13,6 +13,6 @@ Rails.application.routes.draw do
   devise_for :users
   
   get 'inicio', to: 'site/welcome#index'
-  root to: 'welcome#index'
+  root to: 'site/welcome#index'
 
 end
