@@ -1,12 +1,25 @@
 # frozen_string_literal: true
 
 class AdminsBackoffice::AdminsController < AdminsBackofficeController
-  before_action :check_password, only: [:update]
-  before_action :set_admin, only: [:edit, :update]
+  before_action :set_admin, only: [:edit, :update, :destroy]
   before_action :params_admin, only: [:update]
+  before_action :check_password, only: [:update]
 
   def index
-    @admins = Admin.all
+    @admins = Admin.all.order(:email).page(params[:page]).per(5)
+  end
+
+  def new
+    @admin = Admin.new
+  end
+  
+  def create
+    @admin = Admin.new(params_admin)
+    if @admin.save
+      redirect_to admins_backoffice_welcome_index_path, notice: 'Administrador criado com sucesso!'
+    else
+      render :new
+    end
   end
 
   def edit
@@ -19,6 +32,16 @@ class AdminsBackoffice::AdminsController < AdminsBackofficeController
       render :edit
     end
   end
+
+  def destroy  
+    if @admin.destroy
+      redirect_to admins_backoffice_admins_path, notice: 'Administrador deletado com sucesso!'
+    else
+      render :index
+    end
+  end
+
+  private
 
   def check_password
     if params[:admin][:password].blank? && params[:admin][:password_confirmation].blank?
