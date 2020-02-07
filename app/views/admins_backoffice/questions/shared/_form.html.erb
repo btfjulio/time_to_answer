@@ -22,6 +22,13 @@
             <%= form.label :subject %>
             <%= form.collection_select(:subject_id, @subjects, :id, :description, {}, { class:"form-control" } ) %>
           </div>
+
+          <div id="answers">
+              <%= form.fields_for :answers, Answer.new do |answer| %>
+                <%= render 'answer_fields', f: answer %>
+                <%= link_to_add_association 'Adicionar Resposta', form, :answers %>
+              <% end %>
+          </div>
           <button type="submit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Enviar</button>
     <% end %>
   </div>
