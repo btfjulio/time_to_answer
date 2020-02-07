@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :dev do
-  DEFAULT_PASSWORD = 123456
+  DEFAULT_PASSWORD = 123_456
   DEFAULT_FILES_PATH = File.join(Rails.root, 'lib', 'temp')
 
   desc 'Configura o ambiente de desenvolvimento'
@@ -55,22 +55,45 @@ namespace :dev do
     file_path = File.join(DEFAULT_FILES_PATH, file_name)
     File.open(file_path, 'r').each do |line|
       Subject.create!(description: line.strip)
-    end 
+    end
   end
 
   desc 'Adiciona os questões padrão'
   task add_answers_and_questions: :environment do
     Subject.all.each do |subject|
       rand(5..10).times do
-        Question.create!(
-          subject: subject,
-          description: "#{Faker::Lorem.paragraph} #{Faker::Lorem.question}"
-        )
+        params = {
+          question: create_question_params(subject)
+        }
+        choose_write_answer(params)
+        Question.create!(params[:question])
       end
-    end 
+    end
   end
 
   private
+
+  def create_question_params(subject = Subject.all.sample)
+    {
+      subject: subject,
+      description: "#{Faker::Lorem.paragraph} #{Faker::Lorem.question}",
+      answers_attributes: create_answer_params
+    }
+  end
+
+  def create_answer_params
+    Array(2..rand(3..5)).map do |_|
+      {
+        description: Faker::Lorem.sentence,
+        correct: false
+      }
+    end
+  end
+
+  def choose_write_answer(params)
+    answers_array = params[:question][:answers_attributes]
+    answers_array[rand(answers_array.size)][:correct] = true
+  end
 
   def show_spinner(msg_start, msg_end = 'Concluído!')
     spinner = TTY::Spinner.new("[:spinner] #{msg_start}")

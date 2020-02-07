@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 2020_02_04_161755) do
   end
 
   create_table "questions", force: :cascade do |t|
-    t.text "description"
+    t.text "description", null: false
     t.bigint "subject_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
