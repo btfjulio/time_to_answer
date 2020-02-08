@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>TimeToAnswer</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag 'admins_devise' %>
+
+</head>
+
+<body class="bg-gradient-primary">
+
+  <div class="container">
+      <%= yield %>
+  </div>
+
+  <%= javascript_include_tag 'admins_backoffice' %>
+    <% if flash %>
+      <% flash.each do |key,value| %>
+            <%= javascript_tag do %>
+              $.bootstrapGrowl('<%= value %>', {
+                type: 'success',
+                align: 'right',
+                allow_dismiss: true,
+                stackup_spacing: 10
+              });
+            <% end %>
+      <% end %>
+  <% end %>
+
+
+</body>
+
+</html>
