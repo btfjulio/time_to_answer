@@ -1,42 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<head>
+    <title>TimeToAnswer</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %> 
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <%= stylesheet_link_tag 'users_devise' %>
 
-  <title>TimeToAnswer</title>
-  <%= csrf_meta_tags %>
-  <%= csp_meta_tag %>
+  </head>
 
-  <%= stylesheet_link_tag 'admins_devise' %>
+  <body class="login">
+    <div>
+      <div class="login_wrapper">
+        <div class="animate form login_form">
+          <section class="login_content">
+          <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+              <h1>Login Form</h1>
+              <div>
+                <%= f.email_field :email, autofocus: true, autocomplete: "Email", class:"form-control", placeholder: "Email"%>
+              </div>
+              <div>
+                <%= f.password_field :password, autocomplete: "Password", class:"form-control", placeholder: "Password" %>
+              </div>
+              <div class="d-flex justify-content-center">
+                <%= f.submit "Entrar", class:"btn btn-danger submit m-0" %>
+              </div>
+              <div class="clearfix"></div>
+                <br />
+                <div>
+                  <h1><i class="fa fa-paw"></i> Save Whey</h1>
+                  <p>©2016 All Rights Reserved. Privacy and Terms</p>
+                </div>
+              </div>
+          <% end %>
+          </section>
+        </div>
+      </div>
+    </div>
 
-</head>
+    <%= javascript_include_tag 'users_backoffice' %>
 
-<body class="bg-gradient-primary">
+        <% if flash %>
+        <% flash.each do |key,value| %>
+              <%= javascript_tag do %>
+                $.bootstrapGrowl('<%= value %>', {
+                  type: 'success',
+                  align: 'right',
+                  allow_dismiss: true,
+                  stackup_spacing: 10
+                });
+              <% end %>
+        <% end %>
+    <% end %>
 
-  <div class="container">
-      <h1> USER</h1>
-      <%= yield %>
-  </div>
-
-  <%= javascript_include_tag 'admins_backoffice' %>
-    <% if flash %>
-      <% flash.each do |key,value| %>
-            <%= javascript_tag do %>
-              $.bootstrapGrowl('<%= value %>', {
-                type: 'success',
-                align: 'right',
-                allow_dismiss: true,
-                stackup_spacing: 10
-              });
-            <% end %>
-      <% end %>
-  <% end %>
-
-
-</body>
-
+  </body>
 </html>
