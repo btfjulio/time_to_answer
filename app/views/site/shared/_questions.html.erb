@@ -1,0 +1,36 @@
+
+<!-- Main component for a primary marketing message or call to action -->
+<div class="jumbotron">
+    <h3><%= msg_jumbotrom %></h3>
+</div>
+
+
+<% @questions.each do |question| %>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <%= link_to site_search_subject_path(question.subject_id, question.subject.description) do %>
+                    <span class="label label-warning" style="margin-right:10px">
+                        <%= "#{question.subject.description} (#{question.subject.questions_count})" %>
+                    </span>
+                <% end %>
+                <%= question.description %>
+            </h3>
+        </div>
+        <div class="panel-body" style="padding:2%">
+            <%= form_with url: site_answer_path do |form| %>
+                <% question.answers.each do |answer| %>
+                    <div class="form-check" style="margin:1% ">
+                        <%= form.radio_button 'answer_id', answer.id, class:"form-check-input" %>
+                        <%= answer.description %>
+                    </div>   
+                <% end %> 
+                <%= form.submit "Responder", class: "btn btn-primary", id:"submit-#{question.id}" %>
+            <% end %> 
+        </div>
+    </div>
+<% end %>
+
+<div class="text-center">
+    <%= paginate @questions %>
+</div>
