@@ -10,9 +10,9 @@
     <title>TimeToAnswer</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag    'application' %>
-    <%= stylesheet_link_tag    'users_backoffice' %>
+    <%= stylesheet_link_tag 'users_backoffice' %>
+    
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 
   </head>
 
@@ -30,14 +30,18 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <%= image_tag 'img.jpg', alt:"...", class:"img-circle profile_img" %>
+                <%= link_to '#', 'data-toggle':"modal", 'data-target':"#avatarModal" do %>
+                  <%= image_tag avatar_url(current_user), alt:"...", class:"img-circle profile_img", style:"object-fit: cover;width: 4rem;height: 4rem;" %>
+                <% end %>
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>John Doe</h2>
+                <h2><%= current_user.full_name %></h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
+
+
 
             <br />
 
@@ -45,7 +49,16 @@
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
                 <ul class="nav side-menu">                  
-                  <li><a href="javascript:void(0)"><i class="fa fa-user"></i>Dados do perfil</a></li>
+                  <li>
+                    <%= link_to users_backoffice_welcome_index_path do %>
+                      <i class="fa fa-home"></i>Início
+                    <% end %>
+                  </li>
+                  <li>
+                    <%= link_to users_backoffice_profile_path do %>
+                      <i class="fa fa-user"></i>Dados do perfil
+                    <% end %>
+                  </li>
                 </ul>
               </div>
 
@@ -82,7 +95,7 @@
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <%= image_tag 'img.jpg', alt:'' %>
+                    <%= image_tag avatar_url(current_user), alt:'', class: "profile_img" %>
                     <%= current_user.email %>
                     <span class=" fa fa-angle-down"></span>
                   </a>
@@ -101,7 +114,7 @@
                     <li>
                       <a>
                         <span class="image">
-                          <%= image_tag 'img.jpg', alt:"Profile Image" %>
+                          <%= image_tag avatar_url(current_user), alt:"Profile Image" %>
                         </span>
                         <span>
                           <span>John Smith</span>
@@ -115,7 +128,7 @@
                     <li>
                       <a>
                         <span class="image">
-                          <%= image_tag 'img.jpg', alt:"Profile Image" %>
+                          <%= image_tag avatar_url(current_user), alt:"Profile Image" %>
                         </span>
                         <span>
                           <span>John Smith</span>
@@ -174,10 +187,7 @@
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
-              <div class="title_left">
-                <h1>LAYOUT USERS BACKOFFICE</h1>
-                <%= yield %>
-              </div>
+              <%= yield %>
             </div>
           </div>
         </div>
@@ -193,6 +203,41 @@
         <!-- /footer content -->
       </div>
     </div>
+
+    <div class="modal fade" id="avatarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <%= form_with(url: users_backoffice_profile_path, model: current_user, remote: true, id:"demo-form2", class:"form-horizontal form-label-left" ) do |form| %>
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Avatar</h4>
+            </div>
+            <div class="modal-body">
+              <%= form.fields_for :user_profile do |profile_form| %>
+                  <%= image_tag avatar_url(current_user), alt:"...", class:"img-circle profile_img", style:"object-fit: cover;width: 12rem;height: 12rem;" %>
+                  <div class="item form-group">
+                      <%= profile_form.file_field :avatar, class: 'form-control', placeholder: 'Email do administrador', readonly: true %>
+                  </div>
+              <% end %>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              <%= form.submit "Salvar", class:"btn btn-primary" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+
     <%= javascript_include_tag 'users_backoffice' %>
+    <%= javascript_tag do %>
+      $(function() {
+        $('.datepicker').datepicker();
+      });
+    <% end %>
+
+
+
   </body>
 </html>

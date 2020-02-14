@@ -16,12 +16,16 @@ Rails.application.routes.draw do
   end
   namespace :users_backoffice do
     get 'welcome/index' 
+    get 'profile', to: 'profile#edit'
+    patch 'profile', to: 'profile#update'
   end
 
   devise_for :admins, skip: [:registrations]
   devise_for :users
   
   get 'inicio', to: 'site/welcome#index'
+  get 'backoffice', to: 'admins_backoffice/welcome#index'
+  
   root to: 'site/welcome#index'
 
 end

@@ -1,0 +1,13 @@
+$("#avatarModal").modal('hide')
+
+$.bootstrapGrowl('Avatar atualizado com sucesso', {
+    type: 'success',
+    align: 'right',
+    allow_dismiss: true,
+    stackup_spacing: 10
+});
+
+const images = document.querySelectorAll('.profile_img')
+images.forEach((image) => {
+    image.src = "<%= url_for(@user.user_profile.avatar) %>"
+})
