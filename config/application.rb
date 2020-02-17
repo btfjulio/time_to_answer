@@ -29,6 +29,15 @@ module TimeToAnswer
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = {
+      :user_name => 'd57e0684800fea',
+      :password => '7824df2ed0e602',
+      :address => 'smtp.mailtrap.io',
+      :domain => 'smtp.mailtrap.io',
+      :port => '2525',
+      :authentication => :cram_md5
+    }
 
     config.action_view.field_error_proc = Proc.new { |html_tag, instance| 
       html_tag

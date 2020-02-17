@@ -1,16 +1,24 @@
-<h2>Forgot your password?</h2>
-
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+<div>
+  <div class="login_wrapper">
+    <div class="animate form login_form">
+      <section class="login_content">
+        <%= form_for(resource, as: resource_name, url: password_path(resource_name)) do |f| %>
+          <h1>Esqueceu a Senha?</h1>
+          <div>
+            <%= f.email_field :email, autofocus: true, autocomplete: "Email", class:"form-control", placeholder: "Email"%>
+          </div>
+          <div class="d-flex justify-content-center">
+            <%= f.submit "Enviar instruções", class:"btn btn-danger submit m-0" %>
+          </div>
+          <div class="clearfix"></div>
+            <br />
+            <div>
+              <h1><i class="fa fa-paw"></i> Save Whey</h1>
+              <p>©2020 All Rights Reserved. Privacy and Terms</p>
+            </div>
+          </div>
+      <% end %>
+      </section>
+    </div>
   </div>
-
-  <div class="actions">
-    <%= f.submit "Send me reset password instructions" %>
-  </div>
-<% end %>
-
-<%= render "users/shared/links" %>
+</div>
